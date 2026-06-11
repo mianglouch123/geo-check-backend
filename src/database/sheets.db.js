@@ -16,10 +16,10 @@ class SheetsDatabase {
 
   async initialize() {
     try {
-
+    
       const auth = new JWT({
         email: process.env.ID_GOOGLE_SERVICE,
-        key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+        key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n").trim(),
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],
       });
 

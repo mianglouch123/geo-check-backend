@@ -1,15 +1,9 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
 import { RegistroModel } from '../models/Registro.model.js';
-import { readFileSync } from 'fs';
-import { join } from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = join(__filename, '..', '..', '..'); // Ajusta según tu estructura
 
 class SheetsDatabase {
 
@@ -21,62 +15,29 @@ class SheetsDatabase {
     };
 
   async initialize() {
-  try {
-    let auth;
-    
-    // SIEMPRE usar credentials.json en LOCAL (no confiar en NODE_ENV)
-    // Verifica si existe el archivo o simplemente fuerza su uso en desarrollo
-    const usarArchivo = true; // Forzamos usar archivo en local
-    
-    if (usarArchivo) {
-      console.log('🔧 Usando credentials.json');
-      
-      const __filename = fileURLToPath(import.meta.url);
-      const __dirname = join(__filename, '..', '..', '..');
-      const credentialsPath = join(__dirname, 'credentials.json');
-      
-      console.log('Ruta:', credentialsPath);
-      
-      const credentials = JSON.parse(readFileSync(credentialsPath, 'utf8'));
-      
-      auth = new JWT({
-        email: credentials.client_email,
-        key: credentials.private_key,
-        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-      });
-    } else {
-      // Producción: usar variables de entorno
-      let privateKey = process.env.GOOGLE_PRIVATE_KEY;
-      
-      if (privateKey && privateKey.startsWith('"') && privateKey.endsWith('"')) {
-        privateKey = privateKey.slice(1, -1);
-      }
-      
-      if (privateKey && privateKey.includes('\\n')) {
-        privateKey = privateKey.replace(/\\n/g, '\n');
-      }
-      
-      auth = new JWT({
-        email: process.env.ID_GOOGLE_SERVICE,
-        key: privateKey,
-        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-      });
-    }
+    try {
 
-    this.doc = new GoogleSpreadsheet(process.env.SPREADSHEET_ID, auth);
-    await this.doc.loadInfo();
-    
-    this.isConnected = true;
-    console.log(`✅ Google Sheets conectado: ${this.doc.title}`);
-    
-    await this.ensureSheetsExist();
-    
-    return this;
-  } catch (error) {
-    console.error('❌ Error conectando a Google Sheets:', error.message);
-    throw error;
+      const auth = new JWT({
+        email: process.env.ID_GOOGLE_SERVICE,
+        key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+      });
+
+      this.doc = new GoogleSpreadsheet(process.env.SPREADSHEET_ID, auth);
+      await this.doc.loadInfo();
+      
+      this.isConnected = true;
+      console.log(`✅ Google Sheets conectado: ${this.doc.title}`);
+      
+      // Crear/obtener las dos hojas
+      await this.ensureSheetsExist();
+      
+      return this;
+    } catch (error) {
+      console.error('❌ Error conectando a Google Sheets:', error.message);
+      throw error;
+    }
   }
-}
 
   async ensureSheetsExist() {
     // Columnas comunes para ambas hojas

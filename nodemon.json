@@ -1,0 +1,7 @@
+{
+  "watch": ["src/", "config/" , "app.js"],
+  "ext": "js,json,env,ts",
+  "ignore": ["node_modules","logs/", "*.test.js"],
+  "exec" : "node src/app.js"
+
+}

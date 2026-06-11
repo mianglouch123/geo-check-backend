@@ -1,0 +1,27 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno (MUY IMPORTANTE)
+.env
+.env.local
+.env.production
+
+# Credenciales (MUY IMPORTANTE)
+credentials.json
+*.pem
+*.key
+
+# Archivos de configuración local
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de construcción
+dist/
+build/
+*.tsbuildinfo

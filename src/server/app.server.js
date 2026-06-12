@@ -21,8 +21,9 @@ class AppServer {
       "http://localhost:3002", 
       "http://localhost:5173",
       String(`${env.BACKEND_URL || "http://localhost:3002" }`),
-      String(`${env.FRONTED_URL || "http://localhost:5173"}`),
-      "https://geo-votation-backend.onrender.com"
+      String(`${env.FRONTEND_URL || "http://localhost:5173"}`),
+      "https://geo-votation-backend.onrender.com",
+      "https://geo-check-frontend.vercel.app"
      ],
      credentials: true,
      allowedHeaders: ["Content-Type", "Authorization"],

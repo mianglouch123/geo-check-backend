@@ -18,6 +18,8 @@ export class SystemEnv {
     this.NODE_ENV = process.env.NODE_ENV || 'development';
     this.ID_GOOGLE_SERVICE = process.env.ID_GOOGLE_SERVICE || 'geo-sheet-backend@hybrid-zephyr-449119-r7.iam.gserviceaccount.com';
     this.EMAIL_GOOGLE_SERVICE = process.env.EMAIL_GOOGLE_SERVICE || 'geo-sheet-backend@hybrid-zephyr-449119-r7.iam.gserviceaccount.com'
+    this.SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || "none";
+    this.EMAIL_FROM = process.env.EMAIL_FROM || "noreply@geoinsure.cl"
   }
 
   // 2. Convertimos el método en estático

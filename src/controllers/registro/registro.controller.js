@@ -10,7 +10,9 @@ export class RegistroController {
     const session = await mongoose.startSession();
     
     try {
-      const { token, tipo, broker } = req.body;
+      const { token, tipo } = req.body;
+      const broker = req.user.broker || req.broker;
+   
       
       // 1. Validaciones iniciales
       if (!token || !tipo || !broker) {
